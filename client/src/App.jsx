@@ -6,6 +6,9 @@ import date from './assets/date.svg'
 import time from './assets/time.svg'
 import arrow from './assets/down-arrow.svg'
 
+const apiUrl = "http://localhost:3000/api";
+
+
 function App() {
 
   const categories = [
@@ -32,6 +35,26 @@ function App() {
     setCategory(cat);
     setPrice(prices[cat]);
     setDropdown(false);
+  }
+
+  const handlePurchase = () => {
+    fetch(apiUrl+"/buy", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        category: Category,
+        price: price
+      })
+    })
+    .then(()=>{
+      console.log(`Category: ${Category}, Price: ${price}`);
+    })
+    .catch((error) => {
+      console.error("Error during purchase request:", error);
+    });
+    
   }
 
   return (
@@ -79,7 +102,7 @@ function App() {
             </div>
 
             <div className="flex flex-row gap-[5px] mt-[5px]">
-              <button className="flex-3 h-[50px] bg-primary outline-none text-2xl rounded-[10px] font-bold text-black cursor-pointer hover:opacity-80 transition-all duration-300 ease-in-out mb-[20px]">
+              <button className="flex-3 h-[50px] bg-primary outline-none text-2xl rounded-[10px] font-bold text-black cursor-pointer hover:opacity-80 transition-all duration-300 ease-in-out mb-[20px]" onClick={handlePurchase}>
                 {price} MAD
               </button>
               <button id="categorySelector" className="flex items-center justify-center w-[50px] h-[50px] rounded-[10px] outline-none border-solid border-[1px] border-primary cursor-pointer">

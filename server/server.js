@@ -1,9 +1,22 @@
-const express= require('express');
+import express from 'express';
+import cors from 'cors';
+import apiRoute from './routes/api.js';
+import checkoutRoute from './routes/checkout.js';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
 
-app.get("/", (req, res)=>{
-    
-})
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+}));
 
-app.listen(3000);
+// Middleware
+app.use(express.json());
+
+// Routers
+app.use("/api", apiRoute); // will use later to handle VALIDATION
+app.use("/checkout", checkoutRoute); 
+
+app.listen(process.env.PORT || 3000);

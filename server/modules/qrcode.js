@@ -23,11 +23,3 @@ const generateQrCode = async (data)=>{
     }
 
 }
-
-generateQrCode(generateQrUniqueData())
-.then((qrUrl) => {
-    console.log("QR Code URL:", qrUrl);
-})
-.catch((error) => {
-    console.error("Error:", error);
-});
