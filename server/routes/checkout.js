@@ -9,8 +9,8 @@ const getAccessToken = async ()=>{
 
         const response = await got.post(`${process.env.PAYPAL_BASE_URL}/v1/oauth2/token`, {
             headers: {
-                Authorization: `Basic ${base64Credentials}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
+                "Authorization": `Basic ${base64Credentials}`,
+                "Content-Type": 'application/x-www-form-urlencoded'
             },
             form: {
                 grant_type: 'client_credentials'
@@ -28,54 +28,58 @@ const createOrder = async (req, res) => {
     try {
         const accessToken = await getAccessToken();
         const response = await got.post(`${process.env.PAYPAL_BASE_URL}/v2/checkout/orders`, {
-            headers:{
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             },
             json: {
                 intent: "CAPTURE",
+                payment_source: {
+                paypal: {
+                    experience_context: {
+                    payment_method_preference: "IMMEDIATE_PAYMENT_REQUIRED",
+                    landing_page: "LOGIN",
+                    shipping_preference: "GET_FROM_FILE",
+                    user_action: "PAY_NOW",
+                    return_url: "https://example.com/returnUrl",
+                    cancel_url: "https://example.com/cancelUrl"
+                    }
+                }
+                },
                 purchase_units: [
-                    {
+                {
                     amount: {
-                        currency_code: "MAD",
-                        value: "100.00",
+                        currency_code: "USD",
+                        value: "400.00",
                         breakdown: {
-                        item_total: {
-                            currency_code: "MAD",
-                            value: "100.00"
-                        }
+                            item_total: {
+                                currency_code: "USD",
+                                value: "400.00"
+                            }
                         }
                     },
                     items: [
-                        {
-                        name: "Lust Ticket",
-                        description: "Lust Ticket for the event",
-                        quantity: "1",
+                    {
+                        name: "Backstage Lust Ticket",
+                        description: "Backstage ticket to the Lust event",
                         unit_amount: {
-                            currency_code: "MAD",
-                            value: "100.00"
-                        }
-                        }
+                            currency_code: "USD",
+                            value: "400.00"
+                        },
+                        quantity: "1",
+                        category: "DIGITAL_GOODS",
+                    },
                     ]
-                    }
-                ],
-                application_context: {
-                    brand_name: "LUST TICKETS",
-                    locale: "en-US",
-                    user_action: "PAY_NOW",
-                    shipping_preference: "NO_SHIPPING",
-                    return_url: `${process.env.PAYPAL_REDIRECT_URL}/checkout/success`,
-                    cancel_url: `${process.env.PAYPAL_REDIRECT_URL}/checkout/cancel`
                 }
+                ]
             },
-            responseType: 'json',
-        })
+            responseType: 'json'
+            })
 
-
-        console.log(response.body);
-        res.status(200).send("success order created");
+        const orderId = response.body?.id;
+        res.status(200).json({ orderId });
     } catch (error) {
-        res.status(500).send("Error creating order: " + (error.reponse?.body || error.message));
+        res.status(500).send("Error creating order: " + (error.reponse?.message || error.message));
     }
 }
 
