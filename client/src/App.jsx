@@ -7,26 +7,24 @@ import time from './assets/time.svg'
 import arrow from './assets/down-arrow.svg'
 import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom'
 import Checkout from './pages/checkout.jsx'
-
-const apiUrl = "http://localhost:3000/api";
+import { useEffect } from 'react'
+import { utils } from './utils/consts.jsx'
 
 
 function App() {
 
-  const categories = [
-    "Backstage",
-    "Front",
-    "VIP"
-  ];
-  
-  const prices = {
-    Front:200,
-    Backstage:300,
-    VIP:400
-  };
+  const [tickets, setTickets] = useState([]);
 
-  const [Category, setCategory] = useState("Backstage")
-  const [price, setPrice] = useState(prices[Category]);
+  useEffect(()=>{
+
+    fetch(utils.URL.ApiUrl+"/tickets")
+    .then(res => res.json())
+    .then(data => setTickets(data))
+    .catch(err => console.error("Error fetching tickets:", err))
+
+  },[])
+
+  const [category, setCategory] = useState({"name": "Backstage","price": "600.0"})
   const [dropdown, setDropdown] = useState(false);
 
   const navigate = useNavigate();
@@ -38,12 +36,11 @@ function App() {
 
   const handleCategoryChange = (cat) => {
     setCategory(cat);
-    setPrice(prices[cat]);
     setDropdown(false);
   }
 
   const handlePurchase = () => {
-    navigate('/checkout');
+    navigate(`/checkout?category=${category.name}`);
   }
 
   return (
@@ -76,16 +73,16 @@ function App() {
 
                 <div className="relative gap-0 mb-[10px]">
                   <div className="flex flex-row justify-between items-center h-[50px] border-[1px] border-solid border-primary rounded-[10px] p-[10px] z-9 cursor-pointer" onClick={() => toggleCategory()}>
-                    <a className=" text-primary text-2xl z-11" >{Category}</a>
+                    <a className=" text-primary text-2xl z-11" >{category.name}</a>
                     <img  className="w-[40px] h-[40px]" src={arrow}></img>
                   </div>
                   {dropdown && 
                   <div className="absolute top-[40px] overflow-hidden bg-black w-[100%] border-solid border-[1px] border-primary rounded-b-[10px] border-t-0 z-10 pt-[5px]">
-                    {categories.map((cat, index)=>{
-                      if (cat === Category) return null;
+                    {tickets.map((cat, index)=>{
+                      if (cat === category) return null;
                       return (
                         <div key={index} className="flex flex-row justify-between items-center h-[50px] rounded-[10px] p-[10px] z-9 cursor-pointer hover:bg-[rgb(10,10,10)] transition-all duration-300 ease-in-out" onClick={() => handleCategoryChange(cat)}>
-                          <a className=" text-primary text-2xl z-11" >{cat}</a>
+                          <a className=" text-primary text-2xl z-11" >{cat.name}</a>
                         </div>
                       );
                     })}
@@ -95,7 +92,7 @@ function App() {
 
                 <div className="flex flex-row gap-[5px] mt-[5px]">
                   <button className="flex-3 h-[50px] bg-primary outline-none text-2xl rounded-[10px] font-bold text-black cursor-pointer hover:opacity-80 transition-all duration-300 ease-in-out mb-[20px]" onClick={handlePurchase}>
-                    {price} MAD
+                    {category.price} MAD
                   </button>
                   <button id="categorySelector" className="flex items-center justify-center w-[50px] h-[50px] rounded-[10px] outline-none border-solid border-[1px] border-primary cursor-pointer">
                     <img className="w-[30px] h-[30px]" src={share}></img>

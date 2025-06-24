@@ -1,18 +1,26 @@
 import React from 'react'
 import {PayPalScriptProvider, PayPalButtons} from '@paypal/react-paypal-js'
-
-const baseURL = "http://localhost:3000";
+import { useSearchParams } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import { utils } from '.././utils/consts.jsx'
 
 const Checkout = () => {
-  const initialOptions = {
-    clientId: "AaiSy2kJHBdCZnzAUrH8pWN8ZFvNEmgtZLQMYUbpDMMSzbACl4n9bJurtdw7SjG-Z-fKzLFEP2cnhz4y"
-  }
 
-  const style = {
-    shape: "rect",
-    layout: "vertical",
-    color: "gold"
-  }
+  const [searchParams] = useSearchParams();
+
+  const Category = searchParams.get("category");
+  const [tickets, setTickets] = useState([]);
+
+  useEffect(()=>{
+
+    fetch(utils.URL.ApiUrl+"/tickets")
+    .then(res => res.json())
+    .then(data => setTickets(data))
+    .catch(err => console.error("Error fetching tickets:", err))
+
+  },[])
+
+  console.log(tickets.find(cat => cat.name === Category));
 
   const onCreateOrder = async () => {
     try {
@@ -36,14 +44,37 @@ const Checkout = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen min-w-screen bg-black text-white">
-      <PayPalScriptProvider options={initialOptions}>
-        <PayPalButtons 
-          style={style}
-          createOrder={onCreateOrder}
-          //onApprove={onApprove}
-          //onError={onError}
-        />
-      </PayPalScriptProvider>
+      <div className="flex flex-row items-center justify-center w-full h-full gap-[50px]">
+        
+        <div className="h-[200px]">
+
+          <div>
+            <a className="text-primary text-2xl">Order summary</a>
+            <span className="bg-primary opacity-50 w-full h-[1px] block mt-2 mb-4"></span>
+          </div>
+          <div className="flex flex-col items-start gap-[10px]">
+            <div className="flex flex-row items-center justify-between w-[300px]">
+              <span className="text-primary">{Category} Lust Ticket</span>
+              <span className="text-primary">{30}</span>
+            </div>
+            <div className="flex flex-row items-center justify-between w-[300px]">
+              <span className="text-primary">Total</span>
+              <span className="text-primary">{20}</span>
+            </div>
+          </div>
+
+        </div>
+
+        <PayPalScriptProvider options={utils.PaypalButton.initialOptions}>
+            <PayPalButtons 
+              style={utils.PaypalButton.Style}
+              createOrder={onCreateOrder}
+              //onApprove={onApprove}
+              //onError={onError}
+            />
+        </PayPalScriptProvider>
+      </div>
+
     </div>
   )
 }
