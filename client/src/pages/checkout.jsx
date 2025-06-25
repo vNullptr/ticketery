@@ -9,18 +9,25 @@ const Checkout = () => {
   const [searchParams] = useSearchParams();
 
   const Category = searchParams.get("category");
-  const [tickets, setTickets] = useState([]);
+  const [ticket, setTicket] = useState(null); // ticket data
+  const [loading, setLoading] = useState(true); // loaded the ticket data or not
 
   useEffect(()=>{
 
-    fetch(utils.URL.ApiUrl+"/tickets")
-    .then(res => res.json())
-    .then(data => setTickets(data))
+    if (!loading) return;
+
+    fetch(utils.URL.ApiUrl+"/tickets/"+Category)
+    .then(res => {
+      if (res.status == 200) return res.json();
+      if (res.status == 204) return null;
+    })
+    .then(data => {
+      setTicket(data);
+      setLoading(false);
+    })
     .catch(err => console.error("Error fetching tickets:", err))
 
   },[])
-
-  console.log(tickets.find(cat => cat.name === Category));
 
   const onCreateOrder = async () => {
     try {
@@ -29,9 +36,7 @@ const Checkout = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        /*body: JSON.stringify({
-          category: Category
-        })*/
+        /*body: JSON.stringify()*/
       });
       const data = await response.json()
       console.log("Order created:", data.orderId);
@@ -40,6 +45,24 @@ const Checkout = () => {
         console.error("Error creating order:", error);
         throw error;
     }
+  }
+
+  if (loading) {
+
+    return (
+      <div className="bg-black text-primary font-bold text-3xl flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    )
+  }
+
+  if (!ticket){
+      console.log("wassup");
+      return (
+      <div className="bg-black text-primary font-bold text-5xl flex items-center justify-center h-screen">
+        UNAVAILABLE
+      </div>
+      )
   }
 
   return (
