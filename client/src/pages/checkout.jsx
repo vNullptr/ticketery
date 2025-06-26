@@ -1,15 +1,16 @@
 import React from 'react'
 import {PayPalScriptProvider, PayPalButtons} from '@paypal/react-paypal-js'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import { utils } from '.././utils/consts.jsx'
 
 const Checkout = () => {
 
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const Category = searchParams.get("category");
-  const [ticket, setTicket] = useState(null); // ticket data
+  const [ticket, setTicket] = useState(null); // Ticket data
   const [loading, setLoading] = useState(true); // loaded the ticket data or not
 
   useEffect(()=>{
@@ -31,20 +32,46 @@ const Checkout = () => {
 
   const onCreateOrder = async () => {
     try {
-      const response = await fetch(baseURL+"/checkout/create-order", {
+      const response = await fetch(utils.URL.BaseUrl+"/checkout/create-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        /*body: JSON.stringify()*/
+        body: JSON.stringify({"name":ticket.name})
       });
       const data = await response.json()
-      console.log("Order created:", data.orderId);
       return data.orderId;
     } catch (error) {
         console.error("Error creating order:", error);
         throw error;
     }
+  }
+
+  const onApprove = async (data)=>{
+    try{
+      if (!data?.orderID) throw new Error("Invalid order ID");
+
+      const response = await fetch(utils.URL.BaseUrl+"/checkout/capture-payment/"+data.orderID,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          },
+        }
+      )
+
+      const  result = await response.json()
+      console.log(result);
+      navigate("/approved?orderid="+data.orderId)
+
+    } catch (error) {
+      console.error("Error verifying paypal payment: ", error);
+      navigate("/cancel");
+    }
+  }
+
+  const onError = ()=>{
+    navigate("/cancel");
   }
 
   if (loading) {
@@ -57,7 +84,6 @@ const Checkout = () => {
   }
 
   if (!ticket){
-      console.log("wassup");
       return (
       <div className="bg-black text-primary font-bold text-5xl flex items-center justify-center h-screen">
         UNAVAILABLE
@@ -67,7 +93,7 @@ const Checkout = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen min-w-screen bg-black text-white">
-      <div className="flex flex-row items-center justify-center w-full h-full gap-[50px]">
+      <div className="flex flex-col xl:flex-row items-center justify-center w-full h-full gap-[50px]">
         
         <div className="h-[200px]">
 
@@ -77,12 +103,12 @@ const Checkout = () => {
           </div>
           <div className="flex flex-col items-start gap-[10px]">
             <div className="flex flex-row items-center justify-between w-[300px]">
-              <span className="text-primary">{Category} Lust Ticket</span>
-              <span className="text-primary">{30}</span>
+              <span className="text-primary">{ticket.name} Lust Ticket</span>
+              <span className="text-primary">{ticket.price}</span>
             </div>
             <div className="flex flex-row items-center justify-between w-[300px]">
               <span className="text-primary">Total</span>
-              <span className="text-primary">{20}</span>
+              <span className="text-primary">{ticket.price}</span>
             </div>
           </div>
 
@@ -92,8 +118,8 @@ const Checkout = () => {
             <PayPalButtons 
               style={utils.PaypalButton.Style}
               createOrder={onCreateOrder}
-              //onApprove={onApprove}
-              //onError={onError}
+              onApprove={onApprove}
+              onError={onError}
             />
         </PayPalScriptProvider>
       </div>

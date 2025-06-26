@@ -7,6 +7,8 @@ import time from './assets/time.svg'
 import arrow from './assets/down-arrow.svg'
 import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom'
 import Checkout from './pages/checkout.jsx'
+import Approved from './pages/approved.jsx'
+import Cancel from './pages/cancel.jsx'
 import { useEffect } from 'react'
 import { utils } from './utils/consts.jsx'
 
@@ -54,6 +56,8 @@ function App() {
   return (
     <Routes>
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/approved" element={<Approved />} />
+      <Route path="/cancel" element={<Cancel />} />
       <Route path="/" element={
         <div className="flex flex-col items-center justify-center min-h-screen min-w-screen">
           <div className="flex flex-col xl:flex-row w-[60%] h-[500px] gap-[100px]">
