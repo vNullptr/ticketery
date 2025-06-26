@@ -1,5 +1,6 @@
 import express from 'express';
 import got from 'got';
+import { ticketOptions } from '../models/tickets.js';
 
 const router = express.Router();
 
@@ -26,7 +27,15 @@ const getAccessToken = async ()=>{
 
 const createOrder = async (req, res) => {
     try {
+        // Category Data
+        const category = ticketOptions.find((v) => {return v.name.toLowerCase() === req.body.name.toLowerCase()}) 
+        const productName = category.name;
+        const price = category.price;
+
+        // Access token for Order
         const accessToken = await getAccessToken();
+        
+        // Sent request to retrieve order ID for the link
         const response = await got.post(`${process.env.PAYPAL_BASE_URL}/v2/checkout/orders`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -50,21 +59,21 @@ const createOrder = async (req, res) => {
                 {
                     amount: {
                         currency_code: "USD",
-                        value: "400.00",
+                        value: price,
                         breakdown: {
                             item_total: {
                                 currency_code: "USD",
-                                value: "400.00"
+                                value: price
                             }
                         }
                     },
                     items: [
                     {
-                        name: "Backstage Lust Ticket",
-                        description: "Backstage ticket to the Lust event",
+                        name: productName + " Lust Ticket",
+                        description: productName + " ticket to the Lust event",
                         unit_amount: {
                             currency_code: "USD",
-                            value: "400.00"
+                            value: price
                         },
                         quantity: "1",
                         category: "DIGITAL_GOODS",
@@ -79,10 +88,34 @@ const createOrder = async (req, res) => {
         const orderId = response.body?.id;
         res.status(200).json({ orderId });
     } catch (error) {
-        res.status(500).send("Error creating order: " + (error.reponse?.message || error.message));
+        res.status(500).send("Error creating order: ", error.message);
+    }
+}
+
+const capturePayment = async (req, res) => {
+    try {
+        const accessToken = await getAccessToken();
+        const { paymentId }  = req.params;
+        console.log(paymentId);
+        const response = await got.post(`${process.env.PAYPAL_BASE_URL}/v2/checkout/orders/${paymentId}/capture`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                responseType: "json",
+            }
+        )
+
+        const paymentData = response.body
+        console.log(paymentData);
+
+    } catch ( error ){
+        res.status(500).send("Error capturing payment: ", error.message)
     }
 }
 
 router.post('/create-order', createOrder);
+router.get('/capture-payment/:paymentId', capturePayment);
 
 export default router;
