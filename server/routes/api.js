@@ -20,7 +20,7 @@ router.get("/tickets/:category", (req, res) => {
             res.status(204).end(); // 204 -> no content
         }
     } else {
-        res.status(404); // 404 -> not found
+        res.status(404).end(); // 404 -> not found
     }
 })
 

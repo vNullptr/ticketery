@@ -96,7 +96,7 @@ const capturePayment = async (req, res) => {
     try {
         const accessToken = await getAccessToken();
         const { paymentId }  = req.params;
-        console.log(paymentId);
+
         const response = await got.post(`${process.env.PAYPAL_BASE_URL}/v2/checkout/orders/${paymentId}/capture`,
             {
                 headers: {
@@ -108,7 +108,18 @@ const capturePayment = async (req, res) => {
         )
 
         const paymentData = response.body
-        console.log(paymentData);
+        
+        if (paymentData.status !== "COMPLETED"){
+            return res.status(400)
+            .json({error:"Paypal payment incomplete or failed"});
+        }
+
+        // receipt save should happen here
+
+        return res.status(200).json({
+            message:"success",
+            id: paymentId
+        })
 
     } catch ( error ){
         res.status(500).send("Error capturing payment: ", error.message)
