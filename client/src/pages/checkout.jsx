@@ -61,8 +61,7 @@ const Checkout = () => {
       )
 
       const  result = await response.json()
-      console.log(result);
-      navigate("/approved?orderid="+data.orderId)
+      navigate("/approved?orderid="+result.id)
 
     } catch (error) {
       console.error("Error verifying paypal payment: ", error);
