@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -9,7 +8,8 @@ datasource db {
 }
 
 model Ticket {
-  QrCode   String  @id @default(cuid())
+  orderID String @id
   category String
-  isUsed   Boolean @default(false)
+  isUsed Boolean @default(false)
+  qrToken String 
 }
