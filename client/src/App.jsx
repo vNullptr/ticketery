@@ -48,7 +48,7 @@ function App() {
   if (loading) {
     return (
       <div className="bg-black text-primary font-bold text-3xl flex items-center justify-center h-screen">
-        Loading...
+        Loading... Consider refreshing the page !
       </div>
     )
   }
