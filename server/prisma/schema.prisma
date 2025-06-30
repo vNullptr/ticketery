@@ -8,8 +8,9 @@ datasource db {
 }
 
 model Ticket {
-  orderID String @id
+  id String @id @default(uuid())
+  orderID String 
   category String
   isUsed Boolean @default(false)
-  qrToken String 
+  qrToken String @unique
 }
