@@ -1,6 +1,8 @@
 import express from 'express';
 import got from 'got';
+import { generateQrCode, generateQrUniqueData } from '../utils/qrcode.js';
 import { ticketOptions } from '../models/tickets.js';
+import { insertTicket } from '../utils/prisma.js';
 
 const router = express.Router();
 
@@ -57,6 +59,7 @@ const createOrder = async (req, res) => {
                 },
                 purchase_units: [
                 {
+                    custom_id: productName,
                     amount: {
                         currency_code: "USD",
                         value: price,
@@ -108,17 +111,33 @@ const capturePayment = async (req, res) => {
         )
 
         const paymentData = response.body
+        const ticketCategory = response.body.purchase_units?.[0].payments.captures?.[0]?.custom_id;
         
         if (paymentData.status !== "COMPLETED"){
-            return res.status(400)
-            .json({error:"Paypal payment incomplete or failed"});
+            res.status(400).json({error:"Paypal payment incomplete or failed"});
+            return;
         }
 
-        // receipt save should happen here
+        //QR TOKEN
+        const qrCodeData = generateQrUniqueData()
+        
+        // Inserting in Database
+        insertTicket( paymentId, ticketCategory, qrCodeData.id)
+        .catch(e=>console.error(e));
 
-        return res.status(200).json({
-            message:"success",
-            id: paymentId
+        // QR Code generation
+        generateQrCode(qrCodeData)
+        .then( (v) => {
+
+            return res.status(200).json({
+                message:"success",
+                id: paymentId,
+                qr: v
+            })
+        })
+        .catch( (e) => {
+            console.Error(e);
+            res.status(400).send("Error generating QRCode (SERVER): ", error.message)
         })
 
     } catch ( error ){

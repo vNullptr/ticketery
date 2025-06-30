@@ -1,21 +1,21 @@
-const qr = require('qrcode');
-const uuid = require('uuid');
+import qrcode from 'qrcode';
+import {v4} from 'uuid';
 
-const generateQrUniqueData = () => {
+
+export const generateQrUniqueData = () => {
     
-    const uniqueId = uuid.v4();
+    const uniqueId = v4();
     const qrdata = {
-        id : uniqueId,
-        isUsed: false
+        id : uniqueId
     };
 
-    return JSON.stringify(qrdata);
+    return qrdata;
 }
 
-const generateQrCode = async (data)=>{
+export const generateQrCode = async (data)=>{
 
     try{
-        const qrUrl = await qr.toDataURL(data);
+        const qrUrl = await qrcode.toDataURL(JSON.stringify(data));
         return qrUrl;
     }catch (error) {
         console.error("Error generating QR code:", error);
