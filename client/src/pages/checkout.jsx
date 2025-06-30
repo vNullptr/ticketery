@@ -56,12 +56,12 @@ const Checkout = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
-          },
+          }
         }
       )
 
       const  result = await response.json()
-      navigate("/approved?orderid="+result.id)
+      navigate("/approved?orderid="+result.id+"&qrlink="+result.qr);
 
     } catch (error) {
       console.error("Error verifying paypal payment: ", error);
