@@ -27,7 +27,10 @@ function App() {
     if (!loading) return;
 
     fetch(utils.URL.ApiUrl+"/tickets")
-    .then(res => res.json())
+    .then(res => {
+      res.json()
+      console.log(res);
+    })
     .then(data => {
       setTickets(data);
       setLoading(false);
