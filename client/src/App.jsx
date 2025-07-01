@@ -28,8 +28,7 @@ function App() {
 
     fetch(utils.URL.ApiUrl+"/tickets")
     .then(res => {
-      res.json()
-      console.log(res);
+      return res.json()
     })
     .then(data => {
       setTickets(data);
