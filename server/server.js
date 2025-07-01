@@ -8,7 +8,8 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    methods: ['GET', 'POST']
+    origin: 'https://ticketery-production.up.railway.app',
+    methods: ['GET', 'POST'],
 }));
 
 // Middleware
