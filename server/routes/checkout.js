@@ -1,6 +1,6 @@
 import express from 'express';
 import got from 'got';
-import { generateQrCode, generateQrUniqueData } from '../utils/qrcode.js';
+import { generateQrUniqueData } from '../utils/qrcode.js';
 import { ticketOptions } from '../models/tickets.js';
 import { insertTicket } from '../utils/prisma.js';
 
@@ -125,23 +125,14 @@ const capturePayment = async (req, res) => {
         insertTicket( paymentId, ticketCategory, qrCodeData.id)
         .catch(e=>console.error(e));
 
-        // QR Code generation
-        generateQrCode(qrCodeData)
-        .then( (v) => {
-
-            return res.status(200).json({
-                message:"success",
-                id: paymentId,
-                qr: v
-            })
-        })
-        .catch( (e) => {
-            console.Error(e);
-            res.status(400).send("Error generating QRCode (SERVER): ", error.message)
+        return res.status(200).json({
+            message:"success",
+            id: paymentId
         })
 
     } catch ( error ){
-        res.status(500).send("Error capturing payment: ", error.message)
+        console.log(error);
+        res.status(500).send(error.message);
     }
 }
 
