@@ -7,6 +7,7 @@ const Ticket = (props) => {
         <button 
         className="absolute top-4 right-4 text-primary hover:text-white text-2xl"
         aria-label="Close ticket"
+        onClick={props.closeButton}
       >
         <svg
         width="50"
@@ -58,7 +59,7 @@ const Ticket = (props) => {
                             <p className="text-lg font-bold uppercase mb-1">Summer Lust 2025</p>
                             <p className="text-sm mb-3">SAT, AUG 24 • 9:00 PM</p>
                             <div className="h-px w-full bg-primary opacity-30 my-2"></div>
-                            <p className="text-xs mt-3">orderID: <span className="font-mono font-bold">props.orderID</span></p>
+                            <p className="text-xs mt-3">orderID: <span className="font-mono font-bold">{props.orderID}</span></p>
                         </div>
 
                     </div>
