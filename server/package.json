@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "devStart": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "prisma generate",
+    "prisma:deploy": "prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
