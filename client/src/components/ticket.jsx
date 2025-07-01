@@ -1,7 +1,27 @@
-import React from 'react'
-import download from '../assets/download.svg'
+import React from 'react';
+import { useRef } from 'react';
+import download from '../assets/download.svg';
+import { toBlob, toPng } from 'html-to-image'; 
 
 const Ticket = (props) => {
+
+    const ticketRef = useRef();
+
+    const handleDownload = async () => {
+
+        const frame = ticketRef.current;
+
+        try {
+            const dlUrl = await toPng(frame);
+            const link = document.createElement('a');
+            link.download = 'lust-ticket.png';
+            link.href = dlUrl;
+            link.click();
+        } catch (e){
+            console.error("Error loading ticket png :",e);
+        }
+    }
+
   return (
     <div className="fixed bg-black/70 backdrop-blur-sm h-screen w-screen flex flex-col items-center justify-center gap-[50px]">
         <button 
@@ -34,7 +54,7 @@ const Ticket = (props) => {
         </svg>
       </button>
 
-        <div className="w-100 bg-black text-primary font-sans overflow-hidden shadow-2xl mx-auto border border-primary/30">
+        <div className="w-100 bg-black text-primary font-sans overflow-hidden shadow-2xl mx-auto border border-primary/30" ref={ticketRef}>
             {/* Ticket Header */}
             <div className="relative p-4 border-b border-primary">
                 <h2 className="text-2xl font-bold text-center uppercase tracking-wider">{props.category} ACCESS</h2>
@@ -50,7 +70,7 @@ const Ticket = (props) => {
                         {/* QR Code Placeholder */}
                         <div className="w-24 h-24 border-2 border-primary flex items-center justify-center">
                             <div className="text-xs text-center">
-                                <img src={props.qrLink} />
+                                <img src={props.qrLink} crossOrigin="anonymous" />
                             </div>
                         </div>
                         
@@ -73,7 +93,7 @@ const Ticket = (props) => {
             </div>
         </div>
 
-        <div className="bg-black border border-primary rounded-[10px] w-[50px] h-[50px] flex items-center justify-center hover:scale-95 hover:opacity-50 duration-50 transition-all ease-in">
+        <button className="bg-black border border-primary rounded-[10px] w-[50px] h-[50px] flex items-center justify-center hover:scale-95 hover:opacity-50 duration-50 transition-all ease-in" onClick={handleDownload}>
             <svg 
             width="40" 
             height="40" 
@@ -98,7 +118,7 @@ const Ticket = (props) => {
                     stroke-linecap="round"
                 />
             </svg>
-        </div>
+        </button>
     </div>
   )
 }
