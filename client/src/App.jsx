@@ -49,7 +49,7 @@ function App() {
 
   if (loading) {
     return (
-      <div className="bg-black text-primary font-bold text-xl lg:text-3xl flex items-center justify-center h-screen">
+      <div className="bg-black text-primary font-bold text-xl lg:text-3xl flex items-center justify-center h-screen text-center">
         Loading... Consider refreshing the page !
       </div>
     )
@@ -72,15 +72,15 @@ function App() {
                 <a className="text-primary text-5xl font-bold">À partir de 200 MAD</a>
                 <div className="flex-1 flex flex-col items-start gap-[20px] mt-[50px] mb-[20px] text-primary text-[1.5em]">
                   <div>
-                    <img className="-translate-x-1" src={location}></img>
+                    <img className="-translate-x-1 inline" src={location}></img>
                     Marrakech
                   </div>
                   <div>
-                    <img src={date}></img>
+                    <img src={date} className="inline"></img>
                     19 juillet
                   </div>
                   <div>
-                    <img src={time}></img>
+                    <img src={time} className="inline"></img>
                     10pm
                   </div>
                 </div>
