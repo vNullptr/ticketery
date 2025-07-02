@@ -61,11 +61,11 @@ const createOrder = async (req, res) => {
                 {
                     custom_id: productName,
                     amount: {
-                        currency_code: "USD",
+                        currency_code: "MAD",
                         value: price,
                         breakdown: {
                             item_total: {
-                                currency_code: "USD",
+                                currency_code: "MAD",
                                 value: price
                             }
                         }
@@ -75,7 +75,7 @@ const createOrder = async (req, res) => {
                         name: productName + " Lust Ticket",
                         description: productName + " ticket to the Lust event",
                         unit_amount: {
-                            currency_code: "USD",
+                            currency_code: "MAD",
                             value: price
                         },
                         quantity: "1",
