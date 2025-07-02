@@ -2,7 +2,7 @@ import React from 'react'
 
 const Terms = (props) => {
   return (
-    <div className="absolute flex flex-col items-center z-100 bg-black h-screen w-[60%] border-r-1 border-l-1 border-primary">
+    <div className="absolute flex flex-col items-center z-100 bg-black h-screen w-[400px] md:w-[700px] border-r-1 border-l-1 border-primary">
         <button 
         className="absolute top-4 right-4 text-primary hover:text-white text-2xl"
         aria-label="Close ticket"
@@ -33,7 +33,7 @@ const Terms = (props) => {
             </svg>
         </button>
 
-        <h1 className="text-5xl font-bold text-primary mt-10">Termes et Conditions</h1>
+        <h1 className="text-5xl font-bold text-primary mt-10 text-center">Termes et Conditions</h1>
         <div className="p-20 text-primary whitespace-pre-line overflow-auto">
             {`Last updated: 02/07/2025
 
