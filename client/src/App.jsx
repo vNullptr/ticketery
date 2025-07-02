@@ -72,15 +72,15 @@ function App() {
                 <a className="text-primary text-5xl font-bold">À partir de 200 MAD</a>
                 <div className="flex-1 flex flex-col items-start gap-[20px] mt-[50px] mb-[20px] text-primary text-[1.5em]">
                   <div>
-                    <img className="-translate-x-1 inline" src={location}></img>
+                    <img className="-translate-x-1 inline mr-4" src={location}></img>
                     Marrakech
                   </div>
                   <div>
-                    <img src={date} className="inline"></img>
+                    <img src={date} className="inline mr-5"></img>
                     19 juillet
                   </div>
                   <div>
-                    <img src={time} className="inline"></img>
+                    <img src={time} className="inline mr-5"></img>
                     10pm
                   </div>
                 </div>
