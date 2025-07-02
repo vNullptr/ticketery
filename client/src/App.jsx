@@ -80,7 +80,7 @@ function App() {
                     19 juillet
                   </div>
                   <div>
-                    <img src={time} className="inline mr-5"></img>
+                    <img src={time} className="inline mr-6"></img>
                     10pm
                   </div>
                 </div>

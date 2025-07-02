@@ -1,7 +1,8 @@
 import React from 'react';
 import { useRef } from 'react';
 import download from '../assets/download.svg';
-import { toBlob, toPng } from 'html-to-image'; 
+import { toPng } from 'html-to-image';
+import { data } from 'react-router-dom';
 
 const Ticket = (props) => {
 
@@ -9,17 +10,19 @@ const Ticket = (props) => {
 
     const handleDownload = async () => {
 
-        const frame = ticketRef.current;
-
         try {
-            const dlUrl = await toPng(frame);
+            const frame = ticketRef.current;
+
+            const dataURL = await toPng(frame, {cacheBust: true});
             const link = document.createElement('a');
-            link.download = 'lust-ticket.png';
-            link.href = dlUrl;
+            link.href = dataURL;
+            link.download = "lust-ticket.png";
             link.click();
+            
         } catch (e){
-            console.error("Error loading ticket png :",e);
+            console.error(e);
         }
+
     }
 
   return (
@@ -54,43 +57,48 @@ const Ticket = (props) => {
         </svg>
       </button>
 
-        <div className="w-100 bg-black text-primary font-sans overflow-hidden shadow-2xl mx-auto border border-primary/30" ref={ticketRef}>
-            {/* Ticket Header */}
-            <div className="relative p-4 border-b border-primary">
-                <h2 className="text-2xl font-bold text-center uppercase tracking-wider">{props.category} ACCESS</h2>
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent"></div>
-            </div>
-            
-            {/* Ticket Body */}
-            <div className="flex">
-                {/* Main Content */}
-                <div className="flex-1 p-6">
-                    <div className="flex items-center gap-6">
-                        
-                        {/* QR Code Placeholder */}
-                        <div className="w-24 h-24 border-2 border-primary flex items-center justify-center">
-                            <div className="text-xs text-center">
-                                <img src={props.qrLink} crossOrigin="anonymous" />
-                            </div>
-                        </div>
-                        
-                        {/* Ticket Details */}
-                        <div className="flex-1">
-                            <p className="text-lg font-bold uppercase mb-1">Summer Lust 2025</p>
-                            <p className="text-sm mb-3">SAT, AUG 24 • 9:00 PM</p>
-                            <div className="h-px w-full bg-primary opacity-30 my-2"></div>
-                            <p className="text-xs mt-3">orderID: <span className="font-mono font-bold">{props.orderID}</span></p>
-                        </div>
+        <div ref={ticketRef}>
 
+            <div className="w-100 h-65 m-0 p-0 bg-black text-primary font-sans shadow-2xl mx-auto border border-primary/30">
+                {/* Ticket Header */}
+                <div className="relative p-4 border-b border-primary">
+                    <h2 className="text-2xl font-bold text-center uppercase tracking-wider">{props.category} ACCESS</h2>
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+                </div>
+                
+                {/* Ticket Body */}
+                <div className="flex">
+                    {/* Main Content */}
+                    <div className="flex-1 p-6">
+                        <div className="flex items-center gap-6">
+                            
+                            {/* QR Code Placeholder */}
+                            <div className="w-24 h-24 border-2 border-primary flex items-center justify-center">
+                                <div className="text-xs text-center">
+                                    <img src={props.qrLink} crossOrigin="anonymous" />
+                                </div>
+                            </div>
+                            
+                            {/* Ticket Details */}
+                            <div className="flex-1">
+                                <p className="text-lg font-bold uppercase mb-1">Summer Lust 2025</p>
+                                <p className="text-sm mb-3">SAT, JUL 16 • 10:00 PM</p>
+                                <div className="h-px w-full bg-primary opacity-30 my-2"></div>
+                                <p className="text-xs mt-3">orderID: <span className="font-mono font-bold">{props.orderID}</span></p>
+                            </div>
+
+                        </div>
                     </div>
+
+                </div>
+                
+                {/* Ticket Footer */}
+                <div className="p-3 text-center text-xs border-t border-primary bg-black/50">
+                    <p>Present this ticket at entrance</p>
                 </div>
 
             </div>
-            
-            {/* Ticket Footer */}
-            <div className="p-3 text-center text-xs border-t border-primary bg-black/50">
-                <p>Present this ticket at entrance</p>
-            </div>
+    
         </div>
 
         <button className="bg-black border border-primary rounded-[10px] w-[50px] h-[50px] flex items-center justify-center hover:scale-95 hover:opacity-50 duration-50 transition-all ease-in" onClick={handleDownload}>

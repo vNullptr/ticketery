@@ -1,8 +1,9 @@
 import React from 'react'
-import {PayPalScriptProvider, PayPalButtons} from '@paypal/react-paypal-js'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import {PayPalScriptProvider, PayPalButtons} from '@paypal/react-paypal-js';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { utils } from '.././utils/consts.jsx'
+import { utils } from '.././utils/consts.jsx';
+import Terms from '../components/terms.jsx';
 
 const Checkout = () => {
 
@@ -12,6 +13,8 @@ const Checkout = () => {
   const Category = searchParams.get("category");
   const [ticket, setTicket] = useState(null); // Ticket data
   const [loading, setLoading] = useState(true); // loaded the ticket data or not
+  const [checked, setChecked] = useState(false);
+  const [termsOpened, settermsOpened] = useState(false);
 
   useEffect(()=>{
 
@@ -73,6 +76,10 @@ const Checkout = () => {
     navigate("/cancel");
   }
 
+  const onConditionCheck = () => {
+    setChecked(!checked);
+  }
+
   if (loading) {
 
     return (
@@ -92,6 +99,7 @@ const Checkout = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen min-w-screen bg-black text-white">
+      
       <div className="flex flex-col xl:flex-row items-center justify-center w-full h-full gap-[50px]">
         
         <div className="h-[200px]">
@@ -110,9 +118,22 @@ const Checkout = () => {
               <span className="text-primary">{ticket.price}</span>
             </div>
           </div>
+          <div className="mt-5">
+            <input type="checkbox" className="mr-1 translate-y-0.5 appearance-none border-1 border-primary h-3 w-3 rounded-[2px] checked:bg-primary transition duration-200" onClick={()=>setChecked(!checked)}></input>
+            <label className="text-primary text-[0.8em] font-light">J'accepte les <a className="text-primary font-bold underline cursor-pointer" onClick={()=>settermsOpened(!termsOpened)} >termes et conditions</a></label>
+          </div>
 
         </div>
+      
+        {
+          termsOpened
+          &&
+          <Terms closeButton={()=>settermsOpened(!termsOpened)}/>
+        }
 
+        {
+        checked
+        && 
         <PayPalScriptProvider options={utils.PaypalButton.initialOptions}>
             <PayPalButtons 
               style={utils.PaypalButton.Style}
@@ -121,6 +142,8 @@ const Checkout = () => {
               onError={onError}
             />
         </PayPalScriptProvider>
+        }
+
       </div>
 
     </div>
