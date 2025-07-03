@@ -1,8 +1,8 @@
 
 export const utils = {
     "URL":{
-        "BaseUrl":"ticketery-api-production.up.railway.app",
-        "ApiUrl":"ticketery-api-production.up.railway.app/api"
+        "BaseUrl":"https://ticketery-api-production.up.railway.app",
+        "ApiUrl":"https://ticketery-api-production.up.railway.app/api"
     },
     "PaypalButton":{
         "Style": {shape: "rect",layout: "vertical"},
