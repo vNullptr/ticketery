@@ -119,7 +119,7 @@ const Checkout = () => {
             </div>
           </div>
           <div className="mt-5">
-            <input type="checkbox" className="mr-1 translate-y-0.5 appearance-none border-1 border-primary h-3 w-3 rounded-[2px] checked:bg-primary transition duration-200" onClick={()=>setChecked(!checked)}></input>
+            <input type="checkbox" className="cursor-pointer mr-1 translate-y-0.5 appearance-none border-1 border-primary h-3 w-3 rounded-[2px] checked:bg-primary transition duration-200" onClick={()=>setChecked(!checked)}></input>
             <label className="text-primary text-[0.8em] font-light">J'accepte les <a className="text-primary font-bold underline cursor-pointer" onClick={()=>settermsOpened(!termsOpened)} >termes et conditions</a></label>
           </div>
 
