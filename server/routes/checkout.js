@@ -36,7 +36,6 @@ const createOrder = async (req, res) => {
 
         // Access token for Order
         const accessToken = await getAccessToken();
-        
         // Sent request to retrieve order ID for the link
         const response = await got.post(`${process.env.PAYPAL_BASE_URL}/v2/checkout/orders`, {
             headers: {
@@ -61,11 +60,11 @@ const createOrder = async (req, res) => {
                 {
                     custom_id: productName,
                     amount: {
-                        currency_code: "MAD",
+                        currency_code: "EUR",
                         value: price,
                         breakdown: {
                             item_total: {
-                                currency_code: "MAD",
+                                currency_code: "EUR",
                                 value: price
                             }
                         }
@@ -75,7 +74,7 @@ const createOrder = async (req, res) => {
                         name: productName + " Lust Ticket",
                         description: productName + " ticket to the Lust event",
                         unit_amount: {
-                            currency_code: "MAD",
+                            currency_code: "EUR",
                             value: price
                         },
                         quantity: "1",
@@ -87,7 +86,6 @@ const createOrder = async (req, res) => {
             },
             responseType: 'json'
             })
-
         const orderId = response.body?.id;
         res.status(200).json({ orderId });
     } catch (error) {
