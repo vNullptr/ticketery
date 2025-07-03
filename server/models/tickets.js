@@ -7,7 +7,7 @@ export const ticketOptions = [
     },
     {
         "name": "Front",
-        "price": "1.0",
+        "price": "55.0",
 
     }
 ]
