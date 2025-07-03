@@ -69,7 +69,7 @@ function App() {
               
               <div className="relative flex-1 flex flex-col justify-between">
 
-                <a className="text-primary text-3xl md:text-5xl font-bold">À partir de 55 €</a>
+                <a className="text-primary text-3xl md:text-5xl font-bold">À partir de 55€</a>
                 <div className="flex-1 flex flex-col items-start gap-[20px] mt-[50px] mb-[20px] text-primary text-[1.5em]">
                   <div>
                     <img className="-translate-x-1 inline mr-4" src={location}></img>
@@ -106,7 +106,7 @@ function App() {
 
                 <div className="flex flex-row gap-[5px] mt-[5px]">
                   <button className="flex-3 h-[50px] bg-primary outline-none text-xl rounded-[10px] font-bold text-black cursor-pointer hover:opacity-80 transition-all duration-300 ease-in-out mb-[20px]" onClick={handlePurchase}>
-                    {tickets[category].price} €
+                    {tickets[category].price}€
                   </button>
                   <button id="categorySelector" className="flex items-center justify-center w-[50px] h-[50px] rounded-[10px] outline-none border-solid border-[1px] border-primary cursor-pointer">
                     <img className="w-[30px] h-[30px]" src={share}></img>

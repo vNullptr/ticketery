@@ -111,11 +111,11 @@ const Checkout = () => {
           <div className="flex flex-col items-start gap-[10px]">
             <div className="flex flex-row items-center justify-between w-[300px]">
               <span className="text-primary">{ticket.name} Lust Ticket</span>
-              <span className="text-primary">{ticket.price}</span>
+              <span className="text-primary">{ticket.price}€</span>
             </div>
             <div className="flex flex-row items-center justify-between w-[300px]">
               <span className="text-primary">Total</span>
-              <span className="text-primary">{ticket.price}</span>
+              <span className="text-primary">{ticket.price}€</span>
             </div>
           </div>
           <div className="mt-5">
