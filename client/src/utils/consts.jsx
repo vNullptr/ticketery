@@ -1,11 +1,14 @@
 
 export const utils = {
     "URL":{
-        "BaseUrl":"https://ticketery-api-production.up.railway.app",
-        "ApiUrl":"https://ticketery-api-production.up.railway.app/api"
+        "BaseUrl":"ticketery-api-production.up.railway.app",
+        "ApiUrl":"ticketery-api-production.up.railway.app/api"
     },
     "PaypalButton":{
         "Style": {shape: "rect",layout: "vertical"},
-        "initialOptions": {clientId: "AaiSy2kJHBdCZnzAUrH8pWN8ZFvNEmgtZLQMYUbpDMMSzbACl4n9bJurtdw7SjG-Z-fKzLFEP2cnhz4y"}
+        "initialOptions": {
+            clientId: "AUhDi9hL_Rv1C1yntQQpgQF4DZbP3WBWJV9KMPPI3DGCH6dHOlQPjoUn2wqkmZ0keRc3EL5WwZmmy9Ht",
+            currency: "EUR"
+        }
     }
 }

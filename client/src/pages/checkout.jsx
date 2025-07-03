@@ -42,11 +42,10 @@ const Checkout = () => {
         },
         body: JSON.stringify({"name":ticket.name})
       });
-      const data = await response.json()
+      const data = await response.json();
       return data.orderId;
     } catch (error) {
-        console.error("Error creating order:", error);
-        throw error;
+      console.error("Error creating order:", error);
     }
   }
 
@@ -72,7 +71,8 @@ const Checkout = () => {
     }
   }
 
-  const onError = ()=>{
+  const onError = (e)=>{
+    console.error("ERROR OCCURING WITH PAYPAL BUTTON : ", e);
     navigate("/cancel");
   }
 
