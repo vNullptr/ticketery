@@ -77,7 +77,7 @@ function App() {
                   </div>
                   <div>
                     <img src={date} className="inline mr-5"></img>
-                    19 juillet
+                    2 aout
                   </div>
                   <div>
                     <img src={time} className="inline mr-6"></img>
