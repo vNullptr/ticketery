@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useSearchParams} from 'react-router-dom'
 import Ticket from '../components/ticket'
 import { utils } from '.././utils/consts.jsx'
 
@@ -12,7 +12,7 @@ const Approved = () => {
 
     useEffect(()=>{
 
-        fetch(utils.URL.ApiUrl+"/verify/"+id)
+        fetch(utils.URL.BaseUrl+"api/verify/"+id)
         .then( res => {
             if (res.status == 200) return res.json();
             if (res.status == 204) return null;

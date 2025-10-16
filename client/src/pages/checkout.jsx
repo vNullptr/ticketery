@@ -20,7 +20,7 @@ const Checkout = () => {
 
     if (!loading) return;
 
-    fetch(utils.URL.ApiUrl+"/tickets/"+Category)
+    fetch(utils.URL.BaseUrl+"api/tickets/"+Category)
     .then(res => {
       if (res.status == 200) return res.json();
       if (res.status == 204) return null;
@@ -75,7 +75,8 @@ const Checkout = () => {
     console.error("ERROR OCCURING WITH PAYPAL BUTTON : ", e);
     navigate("/cancel");
   }
-
+  
+  // not used for some reason gotta check 
   const onConditionCheck = () => {
     setChecked(!checked);
   }

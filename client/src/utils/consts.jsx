@@ -1,13 +1,12 @@
 
 export const utils = {
     "URL":{
-        "BaseUrl":"https://ticketery-api-production.up.railway.app",
-        "ApiUrl":"https://ticketery-api-production.up.railway.app/api"
+        "BaseUrl":"http://localhost:3000", // replace here with your back end URL
     },
     "PaypalButton":{
         "Style": {shape: "rect",layout: "vertical"},
         "initialOptions": {
-            clientId: "AUhDi9hL_Rv1C1yntQQpgQF4DZbP3WBWJV9KMPPI3DGCH6dHOlQPjoUn2wqkmZ0keRc3EL5WwZmmy9Ht",
+            clientId: "YOUR_PAYPAL_CLIENT_ID", // need to make a config file for this kind of stuff perhaps 
             currency: "EUR"
         }
     }
