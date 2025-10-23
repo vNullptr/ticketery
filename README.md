@@ -34,4 +34,13 @@ A full‑stack application for selling tickets with integrated PayPal checkout a
 git clone https://github.com/vNullptr/ticketery.git
 cd ticketery
 ```
+2. Install dependencies 
+```bash
+cd server
+npm install
+cd ../client
+npm install
+```
+3. too lazy to explain ( needs postgres setup + paypal dev app creation and setup in .env)
+good luck
 
