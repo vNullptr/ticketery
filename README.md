@@ -1,5 +1,5 @@
 # Ticketery 🎫
-
+( project for lust ) 
 A full‑stack application for selling tickets with integrated PayPal checkout and QR‑code generation.
 
 ---
